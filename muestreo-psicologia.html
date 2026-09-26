@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Muestreo y tipos de muestra en psicología</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F6FA; --card:#FFFFFF; --ink:#13223B; --muted:#51607A; --line:#C9D3E1;
+  --blue:#1F56B3; --blueSoft:#E2EBF8; --teal:#0B7A87; --tealSoft:#D8EEF0; --gold:#8F6300; --goldSoft:#F5E9C8;
+  --hl:#FFF1A8; --ok:#1E7A45; --okSoft:#DCF1E4; --bad:#B42318; --badSoft:#FBE3E1; --grey:#AEB9CA;
+  --serif:"Lora", Georgia, "Times New Roman", serif;
+  --sans:"Work Sans", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1624; --card:#162133; --ink:#E6ECF5; --muted:#A2B0C6; --line:#2C3B53;
+    --blue:#7FA8F0; --blueSoft:#1C2E4E; --teal:#5CC6D1; --tealSoft:#133840; --gold:#E3B75A; --goldSoft:#3B3017;
+    --hl:#4F4715; --ok:#7FD39E; --okSoft:#173A26; --bad:#F29B91; --badSoft:#402020; --grey:#4A5870;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1624; --card:#162133; --ink:#E6ECF5; --muted:#A2B0C6; --line:#2C3B53;
+  --blue:#7FA8F0; --blueSoft:#1C2E4E; --teal:#5CC6D1; --tealSoft:#133840; --gold:#E3B75A; --goldSoft:#3B3017;
+  --hl:#4F4715; --ok:#7FD39E; --okSoft:#173A26; --bad:#F29B91; --badSoft:#402020; --grey:#4A5870;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.6}
+.wrap{max-width:1140px;margin:0 auto;padding:28px 20px 80px}
+h1{font-weight:400;font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;margin:.2em 0 .25em;max-width:20ch}
+h2{font-weight:600;font-size:1.7rem;line-height:1.2;margin:0 0 .4em}
+h3{font-family:var(--sans);font-weight:600;font-size:1.02rem;margin:1.2em 0 .4em}
+p{margin:.5em 0 .8em;max-width:72ch}
+ul,ol{padding-left:1.25em;margin:.4em 0} li{margin:.3em 0}
+.lede{font-size:1.12rem;color:var(--muted);max-width:62ch}
+.note{font-family:var(--sans);font-size:.85rem;color:var(--muted)}
+.sans{font-family:var(--sans)}
+sub{font-size:.72em}
+button{font-family:var(--sans)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.scen{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-family:var(--sans);font-size:.92rem;margin:14px 0 0}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--ink);padding:6px 14px;font:500 .9rem var(--sans);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+nav.parts{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 28px}
+nav.parts button{flex:1 1 170px;text-align:left;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:10px 14px;cursor:pointer;font-size:.93rem;line-height:1.3}
+nav.parts button b{display:block;font-size:.76rem;color:var(--muted);font-weight:500}
+nav.parts button[aria-selected="true"]{border-color:var(--blue);box-shadow:inset 0 -3px 0 var(--blue)}
+section.part{display:none} section.part.on{display:block}
+
+.case{border-left:4px solid var(--teal);background:var(--tealSoft);padding:12px 18px;border-radius:0 8px 8px 0;margin:10px 0 18px}
+.case p{margin:.2em 0}
+
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 16px}
+.tabs button{border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:7px 14px;border-radius:999px;font:500 .92rem var(--sans);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.nrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--sans);font-size:.9rem;margin:0 0 14px}
+.nrow .seg button{padding:5px 12px}
+
+.stepper{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:24px;align-items:start}
+@media (max-width:880px){.stepper{grid-template-columns:1fr}}
+.explain{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:calc(12px + env(safe-area-inset-top,0px))}
+@media (max-width:880px){.explain{position:static}}
+.stepcount{font-family:var(--sans);font-size:.85rem;color:var(--muted);margin-bottom:4px}
+.explain h3{font-family:var(--serif);font-size:1.35rem;font-weight:600;margin:.1em 0 .4em}
+.dots{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0 12px}
+.dots button{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--muted);font:500 .75rem var(--sans);cursor:pointer;padding:0}
+.dots button.done{background:var(--tealSoft);border-color:var(--teal);color:var(--ink)}
+.dots button.cur{background:var(--blue);border-color:var(--blue);color:#fff}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:600 .92rem var(--sans);padding:9px 16px;border-radius:8px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn:disabled{opacity:.4;cursor:default}
+.formula{font-family:var(--sans);background:var(--paper);border-radius:8px;padding:8px 12px;margin:8px 0;font-variant-numeric:tabular-nums;overflow-x:auto}
+
+/* población */
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--sans);font-size:.82rem;color:var(--muted);margin:0 0 8px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.sw{width:14px;height:14px;border-radius:3px;display:inline-block}
+.viz{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.cell{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:4px;font:500 9px var(--sans);font-variant-numeric:tabular-nums;color:var(--ink);transition:background .2s,opacity .2s}
+.cell.s0{background:var(--blueSoft);box-shadow:inset 0 0 0 1px var(--blue)}
+.cell.s1{background:var(--tealSoft);box-shadow:inset 0 0 0 1px var(--teal)}
+.cell.s2{background:var(--goldSoft);box-shadow:inset 0 0 0 1px var(--gold)}
+.cell.sel{color:#fff;font-weight:700}
+:root[data-theme="dark"] .cell.sel{color:#0E1624}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cell.sel{color:#0E1624}}
+.cell.sel.s0{background:var(--blue)} .cell.sel.s1{background:var(--teal)} .cell.sel.s2{background:var(--gold)}
+.cell.dim{opacity:.22}
+.cell.focus{outline:3px solid var(--ink);outline-offset:1px}
+.frame{display:grid;grid-template-columns:repeat(auto-fill,24px);gap:3px}
+.boxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:10px}
+.box{border:1.5px dashed var(--line);border-radius:8px;padding:6px}
+.box.on{border:2.5px solid var(--ink);background:var(--hl)}
+.box.off{opacity:.35}
+.bh{font:600 .78rem var(--sans);margin:0 0 5px;display:flex;justify-content:space-between;gap:6px}
+.bh small{font-weight:400;color:var(--muted)}
+.bc{display:grid;grid-template-columns:repeat(6,24px);gap:3px}
+.boxes.strata{grid-template-columns:1fr}
+.boxes.strata .bc{grid-template-columns:repeat(auto-fill,24px)}
+.readout{font-family:var(--sans);font-size:.92rem;margin-top:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:8px 0}
+.stats div{border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--paper)}
+.stats span{display:block;font-size:.74rem;color:var(--muted)}
+.stats strong{font-size:1.15rem;font-variant-numeric:tabular-nums}
+.stats div.key{background:var(--hl)}
+.chiprow{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.chip{min-width:2.2em;text-align:center;padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:var(--card);font-size:.82rem;font-variant-numeric:tabular-nums}
+.chip.dup{text-decoration:line-through;color:var(--bad);border-color:var(--bad)}
+.chip.big{background:var(--hl);border-color:var(--ink);font-weight:600}
+table.t{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:.88rem;font-variant-numeric:tabular-nums;margin:8px 0}
+.t th,.t td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:center}
+.t th{background:var(--paper);font-weight:600}
+.t td:first-child,.t th:first-child{text-align:left}
+.tscroll{overflow-x:auto}
+.hist{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.bar{height:10px;border-radius:3px}
+.compo{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:center;margin:6px 0}
+.compo .track{background:var(--paper);border-radius:4px;height:14px;position:relative;overflow:hidden}
+.compo .fill{position:absolute;left:0;top:0;bottom:0}
+.compo .exp{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink)}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;margin-top:18px}
+.cards > div{border-top:2px solid var(--ink);padding-top:6px}
+.cards .warn{border-top-color:var(--bad)}
+.calcgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;font-family:var(--sans);margin:10px 0}
+.calcgrid label{display:flex;flex-direction:column;font-size:.84rem;color:var(--muted);gap:4px}
+input.cell2,select.cell2{font:500 .95rem var(--sans);padding:7px 8px;border:1.5px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);width:100%;font-variant-numeric:tabular-nums}
+input.cell2{text-align:center}
+.cell2.ok{border-color:var(--ok);background:var(--okSoft)} .cell2.bad{border-color:var(--bad);background:var(--badSoft)}
+.fb{font-family:var(--sans);font-size:.8rem;min-height:1.1em} .fb.ok{color:var(--ok)} .fb.bad{color:var(--bad)}
+.msg{font-family:var(--sans);font-size:.9rem;margin:8px 0} .msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:18px 0}
+.stage h3{font-family:var(--serif);font-size:1.3rem;margin-top:0}
+.item{border-bottom:1px solid var(--line);padding:12px 0;display:grid;grid-template-columns:1fr minmax(200px,260px);gap:14px;align-items:start}
+@media (max-width:700px){.item{grid-template-columns:1fr}}
+.item p{margin:0}
+.item .why{display:none;font-family:var(--sans);font-size:.85rem;color:var(--muted);grid-column:1/-1}
+.item.checked .why{display:block}
+.sim{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px}
+.sim .viz svg{width:100%;height:auto;display:block}
+svg text{font-family:var(--sans);font-size:11px;fill:var(--muted)}
+svg text.lbl{fill:var(--ink);font-weight:600;font-size:12.5px}
+svg .axis{stroke:var(--ink);stroke-width:1.2}
+svg .mu{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4}
+svg .hb{fill:var(--blueSoft);stroke:var(--blue);stroke-width:1}
+svg .hb.bias{fill:var(--goldSoft);stroke:var(--gold)}
+.netwrap svg{width:100%;height:auto;display:block}
+svg .edge{stroke:var(--line);stroke-width:1.2}
+svg .edge.on{stroke:var(--ink);stroke-width:1.8}
+footer{margin-top:50px;font-family:var(--sans);font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="sans" style="color:var(--muted);font-size:.9rem;margin:0">Estadística y metodología para psicología</p>
+    <h1>Muestreo: cómo elegir a quién estudiar</h1>
+    <p class="lede">Aprende paso a paso los conceptos del muestreo, cómo se hace cada tipo de muestra probabilística y no probabilística, qué tan bien estima cada una y ponlo a prueba con ejercicios que cambian cada vez.</p>
+    <div class="scen">Escenario de los ejemplos:
+      <span class="seg" role="group" aria-label="Escenario">
+        <button data-scen="clin" aria-pressed="true">Clínico</button>
+        <button data-scen="for" aria-pressed="false">Forense</button>
+      </span>
+    </div>
+  </header>
+
+  <nav class="parts" role="tablist" aria-label="Partes del tema">
+    <button role="tab" data-part="p1" aria-selected="true"><b>Parte 1</b>Conceptos y tamaño de muestra</button>
+    <button role="tab" data-part="p2" aria-selected="false"><b>Parte 2</b>Muestreos probabilísticos</button>
+    <button role="tab" data-part="p3" aria-selected="false"><b>Parte 3</b>Muestreos no probabilísticos</button>
+    <button role="tab" data-part="p4" aria-selected="false"><b>Parte 4</b>Compara los métodos</button>
+    <button role="tab" data-part="p5" aria-selected="false"><b>Parte 5</b>Ejercicio de aprendizaje</button>
+  </nav>
+
+  <section class="part on" id="p1" role="tabpanel">
+    <h2>Conceptos básicos del muestreo</h2>
+    <div class="case" id="caseText"></div>
+    <div class="stepper">
+      <div class="explain" aria-live="polite">
+        <div class="stepcount" id="ccount"></div><h3 id="ctitle"></h3><div id="cbody"></div>
+        <div class="dots" id="cdots"></div>
+        <div class="ctrl"><button class="btn ghost" id="cprev">Paso anterior</button><button class="btn" id="cnext">Siguiente paso</button></div>
+      </div>
+      <div class="viz" id="cviz"></div>
+    </div>
+  </section>
+
+  <section class="part" id="p2" role="tabpanel">
+    <h2>Muestreos probabilísticos</h2>
+    <p>En estos métodos cada elemento de la población tiene una probabilidad conocida y mayor que cero de quedar en la muestra. Eso permite calcular el error muestral y generalizar a la población. Elige un método y avanza paso a paso.</p>
+    <div class="tabs" role="tablist" aria-label="Método probabilístico" id="mtabs">
+      <button role="tab" data-m="mas" aria-selected="true">Aleatorio simple</button>
+      <button role="tab" data-m="sys" aria-selected="false">Sistemático</button>
+      <button role="tab" data-m="str" aria-selected="false">Estratificado</button>
+      <button role="tab" data-m="clu" aria-selected="false">Por conglomerados</button>
+    </div>
+    <div class="nrow">Tamaño de muestra n:
+      <span class="seg" role="group" aria-label="Tamaño de muestra" id="nseg"></span>
+    </div>
+    <div class="stepper">
+      <div class="explain" aria-live="polite">
+        <div class="stepcount" id="mcount"></div><h3 id="mtitle"></h3><div id="mbody"></div>
+        <div class="dots" id="mdots"></div>
+        <div class="ctrl"><button class="btn ghost" id="mprev">Paso anterior</button><button class="btn" id="mnext">Siguiente paso</button></div>
+      </div>
+      <div class="viz" id="mviz"></div>
+    </div>
+  </section>
+
+  <section class="part" id="p3" role="tabpanel">
+    <h2>Muestreos no probabilísticos</h2>
+    <p>Aquí la selección depende de la accesibilidad o del criterio de quien investiga, no del azar. No se puede calcular la probabilidad de que alguien entre a la muestra, así que tampoco el error muestral. No son «malos»: son adecuados para estudios exploratorios, cualitativos o con poblaciones ocultas, pero sus resultados no se generalizan estadísticamente.</p>
+    <div class="tabs" role="tablist" aria-label="Método no probabilístico" id="ntabs">
+      <button role="tab" data-nm="conv" aria-selected="true">Por conveniencia</button>
+      <button role="tab" data-nm="cuo" aria-selected="false">Por cuotas</button>
+      <button role="tab" data-nm="int" aria-selected="false">Intencional o por juicio</button>
+      <button role="tab" data-nm="bola" aria-selected="false">Bola de nieve</button>
+    </div>
+    <div id="npanel"></div>
+  </section>
+
+  <section class="part" id="p4" role="tabpanel">
+    <h2>Compara los métodos con una simulación</h2>
+    <p>Una sola muestra no te dice si un método es bueno. Lo que importa es cómo se comportaría si repitieras el muestreo muchas veces. Aquí cada método extrae 1,000 muestras del mismo tamaño y se grafica la distribución de las medias obtenidas: su <strong>centro</strong> indica si hay sesgo y su <strong>anchura</strong> indica la precisión.</p>
+    <div class="nrow">Tamaño de muestra n:
+      <span class="seg" role="group" aria-label="Tamaño de muestra para la simulación" id="nseg4"></span>
+      <button class="btn small" id="simRun">Simular 1,000 muestras por método</button>
+    </div>
+    <div id="simOut"><p class="note">Pulsa el botón para correr la simulación.</p></div>
+  </section>
+
+  <section class="part" id="p5" role="tabpanel">
+    <h2>Ejercicio de aprendizaje</h2>
+    <p>Cada vez que generes un ejercicio cambian los casos y los números. Resuelve con calculadora y comprueba.</p>
+    <div class="ctrl"><button class="btn" id="exNew">Generar otro ejercicio</button></div>
+    <div class="stage">
+      <h3>A. Identifica el tipo de muestreo</h3>
+      <p class="note">Lee cada situación y elige el tipo de muestreo que describe.</p>
+      <div id="exA"></div>
+      <div class="ctrl" style="margin-top:12px"><button class="btn" id="exAcheck">Comprobar</button></div>
+      <div class="msg" id="exAmsg" aria-live="polite"></div>
+    </div>
+    <div class="stage"><h3>B. Muestreo sistemático</h3><div id="exB"></div></div>
+    <div class="stage"><h3>C. Muestreo estratificado con asignación proporcional</h3><div id="exC"></div></div>
+    <div class="stage"><h3>D. Tamaño de muestra para estimar una proporción</h3><div id="exD"></div></div>
+  </section>
+
+  <footer>Las poblaciones, centros y puntajes son simulados con fines didácticos. En un estudio real la media poblacional μ es desconocida: aquí la conocemos para poder mostrar el error muestral y el sesgo.</footer>
+</div>
+
+<script>
+/* ================= utilidades ================= */
+const $ = s => document.querySelector(s);
+function mulberry32(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rint = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+function shuffle(a){ a = [...a]; for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+const sdv = a => { const m = mean(a); return Math.sqrt(a.reduce((x, y) => x + (y - m) ** 2, 0) / (a.length - 1)); };
+const f1 = x => x.toFixed(1), f2 = x => x.toFixed(2);
+const num = v => { const t = String(v).trim().replace(',', '.'); return t === '' ? NaN : Number(t); };
+const sgn = x => (x >= -0.005 ? '+' : '−') + Math.abs(x).toFixed(2);
+const NS = [12, 24, 40, 48, 60];
+const M_CLU = 4;
+
+/* ================= escenarios ================= */
+const SCEN = {
+  clin: {
+    seed: 11, unit: 'paciente', units: 'pacientes', clusterWord: 'centro comunitario', clustersWord: 'centros comunitarios',
+    strataWord: 'grupo de edad', var: 'puntaje PHQ-9 de síntomas depresivos', varShort: 'PHQ-9', lo: 0, hi: 27,
+    strata: ['Adolescentes', 'Adultos', 'Adultos mayores'], mu: [14, 10, 7], sd: 4, ceScale: 1.3,
+    clusters: ['CCSM Norte', 'CCSM Sur', 'CCSM Oriente', 'CCSM Poniente', 'CCSM Centro', 'CCSM Valle', 'CCSM Lago', 'CCSM Sierra'],
+    intro: 'Una red de 8 Centros Comunitarios de Salud Mental (CCSM) atiende a 240 pacientes con diagnóstico de depresión. La coordinación quiere estimar el nivel promedio de síntomas depresivos con el PHQ-9 (0 a 27 puntos), pero solo puede evaluar a una parte. Cada cuadro de la derecha es un paciente; el color indica su grupo de edad.',
+    listName: 'el registro de expedientes de la red', access: 'el CCSM Norte, donde haces tus prácticas'
+  },
+  for: {
+    seed: 23, unit: 'interno', units: 'internos', clusterWord: 'centro penitenciario', clustersWord: 'centros penitenciarios',
+    strataWord: 'tipo de delito', var: 'puntaje de impulsividad BIS-11', varShort: 'BIS-11', lo: 30, hi: 120,
+    strata: ['Delitos violentos', 'Delitos patrimoniales', 'Delitos contra la salud'], mu: [82, 69, 74], sd: 9, ceScale: 2.8,
+    clusters: ['Centro A', 'Centro B', 'Centro C', 'Centro D', 'Centro E', 'Centro F', 'Centro G', 'Centro H'],
+    intro: 'Un área de psicología penitenciaria quiere estimar la impulsividad promedio, medida con la Escala de Impulsividad de Barratt (BIS-11, 30 a 120 puntos), de 240 internos distribuidos en 8 centros penitenciarios de un estado. No puede evaluarlos a todos. Cada cuadro de la derecha es un interno; el color indica su tipo de delito.',
+    listName: 'el padrón estatal de internos', access: 'el Centro A, el único donde tienes autorización de ingreso'
+  }
+};
+const MIX = [[.5,.3,.2],[.2,.6,.2],[.25,.5,.25],[.15,.55,.3],[.35,.45,.2],[.2,.4,.4],[.3,.5,.2],[.1,.6,.3]];
+const CE = [2.6, -1, 0.5, -2, 1, -0.5, 1.4, -2.4];
+let SC, POP, MU, N, SIGMA;
+function makePop(sc){
+  const R = mulberry32(sc.seed);
+  const g = () => { let u = 0, v = 0; while (!u) u = R(); while (!v) v = R(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+  const pop = [];
+  for (let c = 0; c < 8; c++) for (let j = 0; j < 30; j++){
+    const u = R(); const s = u < MIX[c][0] ? 0 : u < MIX[c][0] + MIX[c][1] ? 1 : 2;
+    const v = Math.max(sc.lo, Math.min(sc.hi, Math.round(sc.mu[s] + CE[c] * sc.ceScale + sc.sd * g())));
+    pop.push({ id: c * 30 + j + 1, c, s, v });
+  }
+  return pop;
+}
+const byId = id => POP[id - 1];
+const valsOf = ids => [...ids].map(i => byId(i).v);
+const meanOf = ids => mean(valsOf(ids));
+const Nh = () => [0, 1, 2].map(h => POP.filter(p => p.s === h).length);
+
+/* ================= métodos de muestreo ================= */
+function allocProp(n){
+  const nh = Nh(), raw = nh.map(x => n * x / N), fl = raw.map(Math.floor);
+  let rest = n - fl.reduce((a, b) => a + b, 0);
+  const order = raw.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0]);
+  for (let i = 0; i < rest; i++) fl[order[i][1]]++;
+  return { Nh: nh, raw, nh: fl };
+}
+function sMAS(n){ const set = new Set(), draws = []; while (set.size < n){ const x = rint(1, N); draws.push({ x, dup: set.has(x) }); set.add(x); } return { ids: set, draws }; }
+function sSys(n){ const k = Math.floor(N / n), r = rint(1, k), list = []; for (let i = 0; i < n; i++) list.push(r + i * k); return { ids: new Set(list), k, r, list }; }
+function sStr(n){
+  const al = allocProp(n), ids = new Set(), byH = [];
+  for (let h = 0; h < 3; h++){ const pick = shuffle(POP.filter(p => p.s === h).map(p => p.id)).slice(0, al.nh[h]); pick.forEach(i => ids.add(i)); byH.push(pick); }
+  return { ids, al, byH };
+}
+function sClu(n, m = M_CLU){
+  const chosen = shuffle([0,1,2,3,4,5,6,7]).slice(0, m).sort((a, b) => a - b), per = Math.round(n / m);
+  const mono = new Set(), bi = new Set();
+  chosen.forEach(c => { const mem = POP.filter(p => p.c === c).map(p => p.id); mem.forEach(i => mono.add(i)); shuffle(mem).slice(0, per).forEach(i => bi.add(i)); });
+  return { chosen, per, mono, bi, ids: bi };
+}
+function accessOrder(){ return [...shuffle(POP.filter(p => p.c === 0).map(p => p.id)), ...shuffle(POP.filter(p => p.c === 1).map(p => p.id)), ...shuffle(POP.filter(p => p.c === 2).map(p => p.id))]; }
+function sConv(n){ return { ids: new Set(accessOrder().slice(0, n)) }; }
+function sQuota(n){
+  const al = allocProp(n), got = [0, 0, 0], ids = new Set();
+  for (const id of accessOrder()){ const s = byId(id).s; if (got[s] < al.nh[s]){ got[s]++; ids.add(id); } if (ids.size === n) break; }
+  return { ids, al, got };
+}
+
+/* ================= visualización de la población ================= */
+const SCOL = ['var(--blue)', 'var(--teal)', 'var(--gold)'];
+function legend(extra = ''){
+  return `<div class="legend">${SC.strata.map((s, i) => `<span><i class="sw" style="background:${SCOL[i]}"></i>${s}</span>`).join('')}<span>Cuadro relleno = seleccionado</span>${extra}</div>`;
+}
+function gridHTML(layout, sel = new Set(), o = {}){
+  const cell = p => `<span class="cell s${p.s} ${sel.has(p.id) ? 'sel' : ''} ${o.dim && !sel.has(p.id) ? 'dim' : ''} ${o.focus === p.id ? 'focus' : ''}" title="Núm. ${p.id}. ${SC.strata[p.s]}, ${SC.clusters[p.c]}. ${SC.varShort}: ${p.v}">${p.id}</span>`;
+  if (layout === 'frame') return `<div class="frame" aria-label="Marco muestral de ${N} ${SC.units}">${POP.map(cell).join('')}</div>`;
+  if (layout === 'strata') return `<div class="boxes strata">${[0,1,2].map(h => { const mem = POP.filter(p => p.s === h); return `<div class="box"><div class="bh">${SC.strata[h]}<small>N<sub>h</sub> = ${mem.length}</small></div><div class="bc">${mem.map(cell).join('')}</div></div>`; }).join('')}</div>`;
+  return `<div class="boxes">${SC.clusters.map((name, c) => { const mem = POP.filter(p => p.c === c); const cls = o.clusters ? (o.clusters.includes(c) ? 'on' : (o.fadeClusters ? 'off' : '')) : ''; return `<div class="box ${cls}"><div class="bh">${name}<small>${mem.length} ${SC.units}</small></div><div class="bc">${mem.map(cell).join('')}</div></div>`; }).join('')}</div>`;
+}
+function statBox(ids, label = 'Media muestral x̄'){
+  const xb = meanOf(ids), e = xb - MU;
+  return `<div class="stats"><div><span>n</span><strong>${ids.size}</strong></div><div class="key"><span>${label}</span><strong>${f2(xb)}</strong></div><div><span>Media poblacional μ</span><strong>${f2(MU)}</strong></div><div><span>Error x̄ − μ</span><strong>${sgn(e)}</strong></div></div>`;
+}
+function compo(ids){
+  const n = ids.size, cnt = [0, 0, 0]; [...ids].forEach(i => cnt[byId(i).s]++);
+  const nh = Nh();
+  return `<div class="compo">${[0,1,2].map(h => `<span>${SC.strata[h]}</span><div class="track" title="Esperado: ${f1(nh[h] / N * 100)}%"><div class="fill" style="width:${cnt[h] / n * 100}%;background:${SCOL[h]}"></div><div class="exp" style="left:${nh[h] / N * 100}%"></div></div><span>${f1(cnt[h] / n * 100)}%</span>`).join('')}</div><p class="note">La línea vertical marca el porcentaje de cada ${SC.strataWord} en la población.</p>`;
+}
+function drawViz(el, st){
+  if (st.panel){ el.innerHTML = st.panel(); st.after && st.after(); return; }
+  el.innerHTML = legend() + gridHTML(st.layout || 'cluster', st.sel ? st.sel() : new Set(), st.opts ? st.opts() : {}) + `<div class="readout">${st.readout ? st.readout() : ''}</div>`;
+  st.after && st.after();
+}
+
+/* ================= stepper genérico ================= */
+function makeStepper(p, getSteps, onDraw){
+  const st = { i: 0 };
+  st.go = i => {
+    const steps = getSteps(); st.i = Math.max(0, Math.min(steps.length - 1, i)); const s = steps[st.i];
+    $(`#${p}count`).textContent = `Paso ${st.i + 1} de ${steps.length}`;
+    $(`#${p}title`).textContent = s.t; $(`#${p}body`).innerHTML = s.b();
+    $(`#${p}dots`).innerHTML = steps.map((x, j) => `<button aria-label="Ir al paso ${j + 1}: ${x.t}" class="${j === st.i ? 'cur' : j < st.i ? 'done' : ''}" data-j="${j}">${j + 1}</button>`).join('');
+    $(`#${p}dots`).querySelectorAll('button').forEach(b => b.onclick = () => st.go(+b.dataset.j));
+    $(`#${p}prev`).disabled = st.i === 0; $(`#${p}next`).disabled = st.i === steps.length - 1;
+    onDraw(s);
+  };
+  $(`#${p}prev`).onclick = () => st.go(st.i - 1); $(`#${p}next`).onclick = () => st.go(st.i + 1);
+  return st;
+}
+function bindAgain(id, fn){ const b = document.getElementById(id); if (b) b.onclick = fn; }
+
+/* ================= PARTE 1 ================= */
+const S = { n: 24, p1: null, hist: [], method: 'mas', ms: {}, nm: 'conv', netW: 0 };
+function targetsSVG(){
+  const cfg = [['Sin sesgo y precisa', 0, 0, 5], ['Sin sesgo e imprecisa', 0, 0, 20], ['Sesgada y precisa', 17, -12, 5], ['Sesgada e imprecisa', 15, -10, 20]];
+  const R = mulberry32(5);
+  let s = '<svg viewBox="0 0 400 128" role="img" aria-label="Cuatro dianas que ilustran sesgo y precisión">';
+  cfg.forEach(([lab, dx, dy, spr], i) => {
+    const cx = 50 + i * 100, cy = 50;
+    [40, 27, 14].forEach((r, k) => s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${k === 2 ? 'var(--badSoft)' : 'none'}" stroke="var(--grey)"/>`);
+    s += `<circle cx="${cx}" cy="${cy}" r="3" fill="var(--bad)"/>`;
+    for (let k = 0; k < 7; k++) s += `<circle cx="${cx + dx + (R() - .5) * spr * 2}" cy="${cy + dy + (R() - .5) * spr * 2}" r="3.2" fill="var(--blue)"/>`;
+    s += `<text x="${cx}" y="112" text-anchor="middle">${lab}</text>`;
+  });
+  return s + '</svg>';
+}
+function sizePanel(){
+  return `<h3 style="margin-top:0">Calculadora de tamaño de muestra</h3>
+  <div class="calcgrid">
+    <label>Tamaño de la población N<input class="cell2" id="zN" inputmode="numeric" value="${N}"></label>
+    <label>Nivel de confianza<select class="cell2" id="zC"><option value="1.645">90% (Z = 1.645)</option><option value="1.96" selected>95% (Z = 1.96)</option><option value="2.576">99% (Z = 2.576)</option></select></label>
+    <label>Margen de error e (%)<input class="cell2" id="zE" inputmode="decimal" value="5"></label>
+    <label>Proporción esperada p (%)<input class="cell2" id="zP" inputmode="decimal" value="50"></label>
+    <label>Tasa de respuesta esperada (%)<input class="cell2" id="zT" inputmode="decimal" value="100"></label>
+  </div><div id="zOut" class="readout"></div>`;
+}
+function sizeCalc(){
+  const Nn = num($('#zN').value), Z = +$('#zC').value, e = num($('#zE').value) / 100, p = num($('#zP').value) / 100, t = num($('#zT').value) / 100;
+  if ([Nn, e, p, t].some(isNaN) || e <= 0 || p <= 0 || p >= 1 || t <= 0 || t > 1 || Nn < 2){ $('#zOut').innerHTML = '<p class="msg bad">Revisa los valores: N mayor que 1, e mayor que 0, p entre 1 y 99, tasa entre 1 y 100.</p>'; return; }
+  const q = 1 - p, n0 = Z * Z * p * q / (e * e), n = n0 / (1 + (n0 - 1) / Nn), nc = Math.ceil(n), nf = Math.ceil(nc / t);
+  $('#zOut').innerHTML = `<div class="formula">1. Tamaño para población infinita:<br>n<sub>0</sub> = Z² · p · q / e² = ${Z}² · ${f2(p)} · ${f2(q)} / ${e.toFixed(3)}² = <strong>${f2(n0)}</strong></div>
+  <div class="formula">2. Corrección por población finita:<br>n = n<sub>0</sub> / [1 + (n<sub>0</sub> − 1) / N] = ${f2(n0)} / [1 + (${f2(n0)} − 1) / ${Nn}] = ${f2(n)} → <strong>${nc}</strong> (siempre hacia arriba)</div>
+  ${t < 1 ? `<div class="formula">3. Ajuste por no respuesta: ${nc} / ${f2(t)} = ${f2(nc / t)} → invita a <strong>${nf}</strong> ${SC.units}</div>` : ''}
+  <div class="stats"><div class="key"><span>Muestra necesaria</span><strong>${nf}</strong></div><div><span>Porcentaje de la población</span><strong>${f1(nf / Nn * 100)}%</strong></div></div>`;
+}
+const cSteps = () => [
+  { t: 'Define la población', layout: 'cluster',
+    b: () => `<p>La <strong>población</strong> es el conjunto completo de elementos sobre los que quieres sacar conclusiones. Aquí son los ${N} ${SC.units} de los 8 ${SC.clustersWord}. Su tamaño se escribe con mayúscula: <strong>N = ${N}</strong>.</p><p>Una buena definición de población dice <em>quién</em> (criterios de inclusión y exclusión), <em>dónde</em> y <em>cuándo</em>. Por ejemplo: «${SC.units} de 18 años o más${SC.unit === 'paciente' ? ' con diagnóstico de depresión activo' : ' con sentencia firme'} atendidos en la red durante 2026».</p>`,
+    readout: () => `<p>Pasa el cursor sobre un cuadro para ver sus datos. Los grupos son los ${SC.clustersWord}; los colores, el ${SC.strataWord}.</p>` },
+  { t: 'Identifica la unidad de análisis', layout: 'cluster', opts: () => ({ focus: 37 }),
+    b: () => `<p>El <strong>elemento</strong> o <strong>unidad de análisis</strong> es de quien obtienes el dato: cada ${SC.unit}. El cuadro con contorno es un elemento: el número 37, con ${SC.varShort} = ${byId(37).v}.</p><p>No siempre coincide con la <strong>unidad de muestreo</strong>, que es lo que se sortea. Si sorteas ${SC.clustersWord} y luego evalúas a quienes están en ellos, la unidad de muestreo es el centro y la de análisis sigue siendo la persona.</p>` },
+  { t: 'Construye el marco muestral', layout: 'frame',
+    b: () => `<p>El <strong>marco muestral</strong> es la lista concreta de la que eliges: ${SC.listName}, con cada elemento numerado del 1 al ${N}.</p><p>Si el marco no coincide con la población aparece el <strong>error de cobertura</strong>: ${SC.unit === 'paciente' ? 'pacientes que abandonaron el tratamiento pero siguen en el registro, o personas atendidas que nunca se capturaron' : 'internos trasladados que siguen listados, o ingresos recientes que aún no aparecen en el padrón'}.</p><p>Sin marco completo no puedes hacer muestreo aleatorio simple ni sistemático.</p>` },
+  { t: 'Selecciona una muestra', layout: 'frame', sel: () => S.p1.ids,
+    b: () => `<p>La <strong>muestra</strong> es el subconjunto que realmente evalúas. Su tamaño va con minúscula: <strong>n = ${S.n}</strong>, el ${f1(S.n / N * 100)}% de la población.</p><p>Aquí se eligió al azar. Una muestra es <strong>representativa</strong> cuando reproduce las características relevantes de la población; el azar no lo garantiza en cada muestra, pero evita que tus preferencias la distorsionen.</p>`,
+    readout: () => compo(S.p1.ids) },
+  { t: 'Distingue parámetro y estadístico', layout: 'frame', sel: () => S.p1.ids,
+    b: () => `<p>Un <strong>parámetro</strong> describe a la población y casi nunca se conoce. Un <strong>estadístico</strong> describe a la muestra y se usa para estimar el parámetro.</p>
+      <div class="tscroll"><table class="t"><tr><th>Medida</th><th>Población (parámetro)</th><th>Muestra (estadístico)</th></tr><tr><td>Tamaño</td><td>N</td><td>n</td></tr><tr><td>Media</td><td>μ</td><td>x̄</td></tr><tr><td>Desviación estándar</td><td>σ</td><td>s</td></tr><tr><td>Proporción</td><td>P</td><td>p</td></tr></table></div>`,
+    readout: () => statBox(S.p1.ids) },
+  { t: 'Error muestral y sesgo', layout: 'frame', sel: () => S.p1.ids,
+    b: () => `<p>El <strong>error muestral</strong> es la diferencia x̄ − μ que ocurre solo porque observaste una parte y no el todo. Es inevitable, cambia de una muestra a otra y <strong>disminuye al aumentar n</strong>.</p><p>El <strong>sesgo</strong> es un error sistemático: la muestra se desvía siempre en la misma dirección, por ejemplo si solo evalúas a quienes aceptan participar. Aumentar n <strong>no</strong> lo corrige.</p>${targetsSVG()}<p class="note">El centro de la diana es μ; cada punto es la estimación de una muestra distinta.</p>`,
+    readout: () => `${statBox(S.p1.ids)}<button class="btn small" id="p1again">Sacar otra muestra</button><p>Medias de las muestras que has sacado:</p><div class="chiprow">${S.hist.map((x, i) => `<span class="chip ${i === S.hist.length - 1 ? 'big' : ''}">${f1(x)}</span>`).join('')}</div>`,
+    after: () => bindAgain('p1again', () => { S.p1 = sMAS(S.n); S.hist.push(meanOf(S.p1.ids)); S.hist = S.hist.slice(-16); C.go(C.i); }) },
+  { t: 'Probabilístico o no probabilístico', layout: 'cluster',
+    b: () => `<p>Es la primera decisión al diseñar un muestreo.</p><p><strong>Probabilístico:</strong> cada elemento tiene una probabilidad conocida y mayor que cero de ser elegido, y la selección la hace el azar. Permite calcular el error muestral y generalizar. Tipos: aleatorio simple, sistemático, estratificado y por conglomerados.</p><p><strong>No probabilístico:</strong> eliges por accesibilidad o por criterio. Es más barato y a veces la única opción, pero no permite generalizar estadísticamente. Tipos: por conveniencia, por cuotas, intencional o por juicio y bola de nieve.</p>`,
+    readout: () => `<div class="tscroll"><table class="t"><tr><th>Pregunta</th><th>Probabilístico</th><th>No probabilístico</th></tr><tr><td>¿Quién decide quién entra?</td><td>El azar</td><td>Quien investiga o la accesibilidad</td></tr><tr><td>¿Requiere marco muestral?</td><td>Sí (de personas o de conglomerados)</td><td>No</td></tr><tr><td>¿Se calcula el error muestral?</td><td>Sí</td><td>No</td></tr><tr><td>¿Generaliza a la población?</td><td>Sí</td><td>No, solo a casos similares</td></tr><tr><td>Uso típico</td><td>Prevalencias, encuestas, baremos</td><td>Estudios piloto, cualitativos, poblaciones ocultas</td></tr></table></div>` },
+  { t: 'Calcula el tamaño de muestra', panel: sizePanel,
+    after: () => { ['#zN', '#zC', '#zE', '#zP', '#zT'].forEach(s => $(s).addEventListener('input', sizeCalc)); sizeCalc(); },
+    b: () => `<p>Para estimar una proporción (por ejemplo, el porcentaje de ${SC.units} con ${SC.unit === 'paciente' ? 'depresión moderada o grave' : 'impulsividad alta'}) se usa:</p><div class="formula">n<sub>0</sub> = Z² · p · q / e²</div><ul><li><strong>Z:</strong> nivel de confianza (1.96 para 95%).</li><li><strong>p:</strong> proporción esperada; si no la conoces usa 50%, que da la muestra más grande y segura. q = 1 − p.</li><li><strong>e:</strong> margen de error que aceptas.</li></ul><p>Si la población es finita y conocida se corrige: n = n<sub>0</sub> / [1 + (n<sub>0</sub> − 1)/N]. Al final se ajusta por la tasa de respuesta esperada, porque en clínica y en prisión no todos aceptan participar.</p><p class="note">Para estimar una media se usa n<sub>0</sub> = Z²σ² / e², con σ tomada de estudios previos o de un piloto.</p>` }
+];
+const C = makeStepper('c', cSteps, s => drawViz($('#cviz'), s));
+
+/* ================= PARTE 2 ================= */
+function getMS(){ if (!S.ms[S.method]) S.ms[S.method] = { mas: sMAS, sys: sSys, str: sStr, clu: sClu }[S.method](S.n); return S.ms[S.method]; }
+const again = id => `<button class="btn small" id="${id}">Sacar otra muestra</button>`;
+function bindMagain(){ bindAgain('magain', () => { S.ms[S.method] = null; M.go(M.i); }); }
+const METHODS = {
+  mas: () => [
+    { t: 'Consigue el marco muestral completo', layout: 'frame',
+      b: () => `<p>El muestreo aleatorio simple (MAS) exige una lista completa y numerada de toda la población: aquí, ${SC.listName} del 1 al ${N}.</p><p>En este método <strong>cada elemento tiene la misma probabilidad</strong> de ser elegido y, además, cada posible muestra de tamaño n tiene la misma probabilidad.</p>` },
+    { t: 'Decide el tamaño de muestra', layout: 'frame',
+      b: () => `<p>Define n con la fórmula de la parte 1 o según los recursos disponibles. Aquí n = <strong>${S.n}</strong>; puedes cambiarlo arriba.</p><div class="formula">Probabilidad de inclusión de cada ${SC.unit} = n / N = ${S.n} / ${N} = ${(S.n / N).toFixed(3)}</div>` },
+    { t: 'Genera números aleatorios', layout: 'frame', sel: () => getMS().ids,
+      b: () => `<p>Obtén números aleatorios entre 1 y ${N} con una tabla de números aleatorios, con Excel (<span class="sans">=ALEATORIO.ENTRE(1;${N})</span>) o con un generador en línea. Cada número indica qué elemento del marco entra.</p><p>Se trabaja <strong>sin reemplazo</strong>: si sale un número repetido se descarta y se genera otro, porque la misma persona no puede evaluarse dos veces.</p>`,
+      readout: () => { const d = getMS().draws; const dups = d.filter(x => x.dup).length; return `<p>Números generados, en orden${dups ? ` (${dups} repetido${dups > 1 ? 's' : ''}, tachado${dups > 1 ? 's' : ''})` : ''}:</p><div class="chiprow">${d.map(x => `<span class="chip ${x.dup ? 'dup' : ''}">${x.x}</span>`).join('')}</div>${again('magain')}`; }, after: bindMagain },
+    { t: 'Evalúa y calcula el estadístico', layout: 'frame', sel: () => getMS().ids,
+      b: () => `<p>Aplicas el instrumento a los ${S.n} ${SC.units} seleccionados y calculas la media muestral. Como la selección fue aleatoria, x̄ es un estimador <strong>insesgado</strong> de μ: si repitieras el proceso muchas veces, el promedio de todas las x̄ coincidiría con μ.</p><p>Saca varias muestras y observa cómo cambia el error.</p>`,
+      readout: () => statBox(getMS().ids) + again('magain'), after: bindMagain },
+    { t: 'Valora el método', layout: 'frame', sel: () => getMS().ids,
+      b: () => `<h3>Ventajas</h3><ul><li>Es el más sencillo de entender y la base de casi todas las fórmulas estadísticas.</li><li>No requiere saber nada de la población salvo la lista.</li></ul><h3>Desventajas</h3><ul><li>Exige un marco completo, que muchas veces no existe.</li><li>Por azar puede dejar subrepresentado a un grupo pequeño. Mira la composición de esta muestra.</li><li>Si la población está dispersa geográficamente, visitar a cada persona sale caro.</li></ul><h3>Ejemplo</h3><p>${SC.unit === 'paciente' ? 'Sortear 60 de 600 expedientes clínicos para auditar la calidad de las notas de evolución.' : 'Sortear 80 carpetas de las 800 evaluaciones periciales de un año para revisar si incluyen consentimiento informado.'}</p>`,
+      readout: () => compo(getMS().ids) + again('magain'), after: bindMagain }
+  ],
+  sys: () => [
+    { t: 'Ordena el marco muestral', layout: 'frame',
+      b: () => `<p>El muestreo sistemático también parte de una lista completa y numerada. El orden importa: aquí la lista está ordenada por ${SC.clusterWord} y, dentro de cada uno, por número de ${SC.unit === 'paciente' ? 'expediente' : 'registro'}.</p>` },
+    { t: 'Calcula el intervalo de selección', layout: 'frame',
+      b: () => { const k = Math.floor(N / S.n); return `<p>El intervalo k indica cada cuántos elementos se toma uno:</p><div class="formula">k = N / n = ${N} / ${S.n} = ${f2(N / S.n)}${N % S.n ? ` → ${k} (se redondea hacia abajo)` : ''}</div><p>Si k no es entero, redondear hacia abajo asegura que alcancen los elementos. En ese caso la última parte de la lista tiene una probabilidad ligeramente distinta; algunos textos recorren la lista de forma circular para evitarlo.</p>`; } },
+    { t: 'Elige un arranque aleatorio', layout: 'frame', sel: () => new Set([getMS().r]),
+      b: () => `<p>Sortea un número r entre 1 y k. Ese es el <strong>único</strong> paso aleatorio del método.</p><div class="formula">r = número aleatorio entre 1 y ${getMS().k} → r = <strong>${getMS().r}</strong></div>`,
+      readout: () => again('magain'), after: bindMagain },
+    { t: 'Selecciona cada k-ésimo elemento', layout: 'frame', sel: () => getMS().ids,
+      b: () => { const m = getMS(); return `<p>A partir de r, suma k una y otra vez:</p><div class="formula">r, r + k, r + 2k, … , r + (n − 1)k<br>${m.r}, ${m.r + m.k}, ${m.r + 2 * m.k}, … , ${m.list[m.list.length - 1]}</div><p>Hay solo ${m.k} muestras posibles distintas, una por cada arranque.</p>`; },
+      readout: () => `<div class="chiprow">${getMS().list.map(x => `<span class="chip">${x}</span>`).join('')}</div>${statBox(getMS().ids)}${again('magain')}`, after: bindMagain },
+    { t: 'Valora el método', layout: 'cluster', sel: () => getMS().ids,
+      b: () => `<h3>Ventajas</h3><ul><li>Es rápido y fácil de aplicar en campo: basta con contar.</li><li>Se puede usar aunque la lista se vaya formando, por ejemplo con ${SC.unit === 'paciente' ? 'cada quinto paciente que llega a urgencias psiquiátricas' : 'cada décimo ingreso al centro de observación'}.</li><li>Reparte la muestra a lo largo de toda la lista: aquí cae en los 8 ${SC.clustersWord}, como se ve a la derecha.</li></ul><h3>Riesgo principal: la periodicidad</h3><p>Si la lista tiene un patrón que se repite cada k elementos, la muestra puede quedar sesgada. Por ejemplo, si ${SC.unit === 'paciente' ? 'la agenda asigna a cada terapeuta bloques de 10 pacientes y el primero de cada bloque siempre es un caso de primera vez' : 'el padrón lista a los internos por celdas de 10 y el primero de cada celda es siempre el responsable de la estancia'}, con k = 10 podrías elegir solo a ese tipo de persona.</p>`,
+      readout: () => statBox(getMS().ids) + again('magain'), after: bindMagain }
+  ],
+  str: () => [
+    { t: 'Elige la variable de estratificación', layout: 'strata',
+      b: () => `<p>Divide la población en <strong>estratos</strong>: grupos mutuamente excluyentes definidos por una característica conocida de antemano para todos. Aquí usamos el ${SC.strataWord}.</p><p>Conviene estratificar por una variable relacionada con lo que mides. Los estratos deben ser <strong>homogéneos por dentro y distintos entre sí</strong>. En estos datos ${SC.strata[0].toLowerCase()} tienden a puntuar más alto en ${SC.varShort} que ${SC.strata[2].toLowerCase()}.</p>`,
+      readout: () => { const nh = Nh(); return `<table class="t"><tr><th>Estrato</th><th>N<sub>h</sub></th><th>Peso W<sub>h</sub> = N<sub>h</sub>/N</th></tr>${[0,1,2].map(h => `<tr><td>${SC.strata[h]}</td><td>${nh[h]}</td><td>${(nh[h] / N).toFixed(3)}</td></tr>`).join('')}<tr><td><strong>Total</strong></td><td><strong>${N}</strong></td><td><strong>1.000</strong></td></tr></table>`; } },
+    { t: 'Reparte la muestra entre los estratos', layout: 'strata',
+      b: () => `<p>Con <strong>asignación proporcional</strong>, cada estrato recibe una parte de la muestra igual a su peso en la población:</p><div class="formula">n<sub>h</sub> = n · N<sub>h</sub> / N</div><p>Si los decimales no suman n, se da la unidad sobrante al estrato con la parte decimal más grande.</p><p class="note">Otras opciones: <strong>asignación igual</strong> (el mismo n<sub>h</sub> en cada estrato, útil para comparar estratos) y <strong>asignación óptima de Neyman</strong> (más muestra donde hay más variabilidad).</p>`,
+      readout: () => { const a = allocProp(S.n); return `<table class="t"><tr><th>Estrato</th><th>N<sub>h</sub></th><th>n · N<sub>h</sub> / N</th><th>n<sub>h</sub></th></tr>${[0,1,2].map(h => `<tr><td>${SC.strata[h]}</td><td>${a.Nh[h]}</td><td>${S.n} · ${a.Nh[h]} / ${N} = ${f2(a.raw[h])}</td><td><strong>${a.nh[h]}</strong></td></tr>`).join('')}<tr><td><strong>Total</strong></td><td>${N}</td><td></td><td><strong>${S.n}</strong></td></tr></table>`; } },
+    { t: 'Haz un muestreo aleatorio en cada estrato', layout: 'strata', sel: () => getMS().ids,
+      b: () => `<p>Dentro de cada estrato aplica un muestreo aleatorio simple (o sistemático) independiente, hasta completar su n<sub>h</sub>.</p><p>Así la muestra reproduce exactamente la composición de la población en la variable de estratificación: ningún grupo queda fuera por mala suerte.</p>`,
+      readout: () => compo(getMS().ids) + again('magain'), after: bindMagain },
+    { t: 'Calcula la media estratificada', layout: 'strata', sel: () => getMS().ids,
+      b: () => `<p>La media de la población se estima ponderando la media de cada estrato por su peso:</p><div class="formula">x̄<sub>st</sub> = Σ W<sub>h</sub> · x̄<sub>h</sub></div><p>Con asignación proporcional da lo mismo que la media simple de la muestra. Con asignación igual o de Neyman la ponderación es indispensable.</p>`,
+      readout: () => { const m = getMS(), W = Nh().map(x => x / N); const xh = m.byH.map(ids => ids.length ? mean(ids.map(i => byId(i).v)) : 0); const xst = W.reduce((s, w, h) => s + w * xh[h], 0);
+        return `<table class="t"><tr><th>Estrato</th><th>n<sub>h</sub></th><th>x̄<sub>h</sub></th><th>W<sub>h</sub></th><th>W<sub>h</sub> · x̄<sub>h</sub></th></tr>${[0,1,2].map(h => `<tr><td>${SC.strata[h]}</td><td>${m.byH[h].length}</td><td>${f2(xh[h])}</td><td>${W[h].toFixed(3)}</td><td>${f2(W[h] * xh[h])}</td></tr>`).join('')}<tr><td colspan="4"><strong>x̄<sub>st</sub></strong></td><td><strong>${f2(xst)}</strong></td></tr></table>${statBox(m.ids, 'Media estratificada')}${again('magain')}`; }, after: bindMagain },
+    { t: 'Valora el método', layout: 'strata', sel: () => getMS().ids,
+      b: () => `<h3>Ventajas</h3><ul><li>Suele ser <strong>más preciso</strong> que el aleatorio simple con el mismo n, cuando los estratos difieren entre sí. Compruébalo en la parte 4.</li><li>Garantiza representar a grupos pequeños, como ${SC.strata[2].toLowerCase()}.</li><li>Permite dar resultados por estrato.</li></ul><h3>Desventajas</h3><ul><li>Necesitas conocer el estrato de cada elemento antes de muestrear.</li><li>Si la variable de estratificación no se relaciona con lo que mides, no ganas precisión.</li></ul><h3>Ejemplo</h3><p>${SC.unit === 'paciente' ? 'Una encuesta de ansiedad en una universidad estratificada por facultad, porque las carreras de salud suelen reportar más estrés que otras.' : 'Un estudio de consumo de sustancias en prisión estratificado por tipo de delito, porque se espera que el consumo difiera entre delitos contra la salud y el resto.'}</p>`,
+      readout: () => statBox(getMS().ids) + again('magain'), after: bindMagain }
+  ],
+  clu: () => [
+    { t: 'Identifica los conglomerados', layout: 'cluster',
+      b: () => `<p>Un <strong>conglomerado</strong> es un grupo natural de elementos que ya existe: aquí, cada ${SC.clusterWord}. Otros ejemplos: escuelas, grupos escolares, hospitales, colonias, juzgados.</p><p>En este método <strong>se sortean conglomerados, no personas</strong>. Solo necesitas la lista de conglomerados y, después, la lista de personas dentro de los que salgan.</p><p>Lo ideal es lo contrario del estrato: cada conglomerado debería ser una «mini población», variado por dentro y parecido a los demás.</p>` },
+    { t: 'Sortea los conglomerados', layout: 'cluster', opts: () => ({ clusters: getMS().chosen, fadeClusters: true }),
+      b: () => `<p>Numera los 8 ${SC.clustersWord} y elige ${M_CLU} al azar con muestreo aleatorio simple.</p><div class="formula">Seleccionados: ${getMS().chosen.map(c => SC.clusters[c]).join(', ')}</div><p>Con esto el trabajo de campo se concentra en ${M_CLU} sedes en lugar de 8.</p>`,
+      readout: () => again('magain'), after: bindMagain },
+    { t: 'Monoetápico: evalúa a todos', layout: 'cluster', sel: () => getMS().mono, opts: () => ({ clusters: getMS().chosen, fadeClusters: true }),
+      b: () => `<p>En el muestreo por conglomerados <strong>monoetápico</strong> se evalúa a todos los elementos de los conglomerados seleccionados.</p><div class="formula">n = ${M_CLU} conglomerados × 30 = ${getMS().mono.size}</div><p>Obtienes muchos datos, pero no necesariamente una buena estimación: si los ${SC.clustersWord} elegidos son distintos al resto, todos sus miembros comparten esa diferencia.</p>`,
+      readout: () => statBox(getMS().mono) + again('magain'), after: bindMagain },
+    { t: 'Bietápico: submuestrea dentro de cada uno', layout: 'cluster', sel: () => getMS().bi, opts: () => ({ clusters: getMS().chosen, fadeClusters: true }),
+      b: () => `<p>En el <strong>bietápico</strong> hay dos sorteos: primero conglomerados y después, dentro de cada uno, una muestra aleatoria de personas.</p><div class="formula">n = ${M_CLU} conglomerados × ${getMS().per} ${SC.units} = ${getMS().bi.size}</div><p>Cuando hay más etapas se llama <strong>polietápico</strong>. Las encuestas nacionales de salud en México, como la ENSANUT, combinan estratos y conglomerados en varias etapas: regiones, áreas geográficas, viviendas y personas.</p>`,
+      readout: () => statBox(getMS().bi) + again('magain'), after: bindMagain },
+    { t: 'Valora el método', layout: 'cluster', sel: () => getMS().bi, opts: () => ({ clusters: getMS().chosen, fadeClusters: true }),
+      b: () => `<h3>Ventajas</h3><ul><li>Reduce costos y traslados: vas a pocas sedes.</li><li>No necesitas un listado de toda la población, solo de los conglomerados.</li></ul><h3>Desventajas</h3><ul><li>Suele ser <strong>menos preciso</strong> que el aleatorio simple con el mismo n, porque las personas de un mismo conglomerado se parecen entre sí. A esa pérdida se le llama <strong>efecto de diseño</strong>.</li><li>Aquí los centros difieren (unos puntúan más alto que otros), así que la estimación depende mucho de qué centros salgan.</li></ul><h3>Estratos contra conglomerados</h3><div class="tscroll"><table class="t"><tr><th></th><th>Estratos</th><th>Conglomerados</th></tr><tr><td>¿Qué se sortea?</td><td>Personas en todos los estratos</td><td>Algunos grupos</td></tr><tr><td>Por dentro deben ser</td><td>Homogéneos</td><td>Heterogéneos</td></tr><tr><td>Principal beneficio</td><td>Precisión</td><td>Costo y logística</td></tr></table></div>`,
+      readout: () => statBox(getMS().bi) + again('magain'), after: bindMagain }
+  ]
+};
+const M = makeStepper('m', () => METHODS[S.method](), s => drawViz($('#mviz'), s));
+function nButtons(el, onPick){
+  el.innerHTML = NS.map(n => `<button data-n="${n}" aria-pressed="${n === S.n}">${n}</button>`).join('');
+  el.querySelectorAll('button').forEach(b => b.onclick = () => { S.n = +b.dataset.n; S.ms = {}; S.p1 = sMAS(S.n); S.hist = [meanOf(S.p1.ids)]; onPick(); });
+}
+function refreshN(){ nButtons($('#nseg'), () => { refreshN(); M.go(M.i); C.go(C.i); }); nButtons($('#nseg4'), () => { refreshN(); M.go(M.i); C.go(C.i); if (SIM) runSim(); }); }
+document.querySelectorAll('#mtabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#mtabs button').forEach(x => x.setAttribute('aria-selected', x === b)); S.method = b.dataset.m; M.go(0);
+});
+
+/* ================= PARTE 3 ================= */
+let NET;
+function makeNet(){
+  const R = mulberry32(31), nodes = [];
+  for (let i = 0; i < 30; i++) nodes.push({ x: 40 + R() * 400, y: 30 + R() * 300, g: 0 });
+  for (let i = 0; i < 14; i++) nodes.push({ x: 510 + R() * 150, y: 50 + R() * 260, g: 1 });
+  const E = new Set(), nb = nodes.map(() => []);
+  nodes.forEach((a, i) => {
+    nodes.map((b, j) => [j, (a.x - b.x) ** 2 + (a.y - b.y) ** 2]).filter(([j]) => j !== i && nodes[j].g === a.g).sort((p, q) => p[1] - q[1]).slice(0, 3)
+      .forEach(([j]) => { const k = i < j ? i + '-' + j : j + '-' + i; if (!E.has(k)){ E.add(k); nb[i].push(j); nb[j].push(i); } });
+  });
+  nodes.forEach((a, i) => nb[i].sort((p, q) => ((nodes[p].x - a.x) ** 2 + (nodes[p].y - a.y) ** 2) - ((nodes[q].x - a.x) ** 2 + (nodes[q].y - a.y) ** 2)));
+  const seeds = nodes.map((n, i) => [i, n.x]).filter(([i]) => nodes[i].g === 0).sort((a, b) => a[1] - b[1]).slice(0, 2).map(x => x[0]);
+  const wave = nodes.map(() => -1), from = nodes.map(() => -1); seeds.forEach(s => wave[s] = 0);
+  let frontier = seeds, w = 0;
+  while (frontier.length){ const next = []; frontier.forEach(i => { let c = 0; for (const j of nb[i]){ if (c >= 3) break; if (wave[j] < 0){ wave[j] = w + 1; from[j] = i; next.push(j); c++; } } }); frontier = next; if (next.length) w++; }
+  return { nodes, E: [...E].map(k => k.split('-').map(Number)), wave, from, maxW: w };
+}
+function netSVG(W){
+  const { nodes, E, wave, from } = NET; const col = ['var(--ink)', 'var(--blue)', 'var(--teal)', 'var(--gold)'];
+  let s = '<svg viewBox="0 0 700 360" role="img" aria-label="Red de contactos para muestreo de bola de nieve">';
+  s += `<text class="lbl" x="40" y="18">Red conectada con las semillas</text><text class="lbl" x="510" y="18">Red sin vínculo con las semillas</text>`;
+  E.forEach(([a, b]) => { const on = (from[b] === a && wave[b] <= W && wave[b] > 0) || (from[a] === b && wave[a] <= W && wave[a] > 0); s += `<line class="edge ${on ? 'on' : ''}" x1="${nodes[a].x}" y1="${nodes[a].y}" x2="${nodes[b].x}" y2="${nodes[b].y}"/>`; });
+  nodes.forEach((n, i) => { const w = wave[i]; const on = w >= 0 && w <= W; s += `<circle cx="${n.x}" cy="${n.y}" r="${w === 0 ? 10 : 8}" fill="${on ? col[Math.min(w, 3)] : 'var(--card)'}" stroke="${on ? col[Math.min(w, 3)] : 'var(--grey)'}" stroke-width="2"><title>${on ? (w === 0 ? 'Semilla' : 'Reclutado en la ola ' + w) : 'No reclutado'}</title></circle>`; });
+  return s + '</svg>';
+}
+const NM = {
+  conv: () => `
+    <div class="stepper"><div class="explain">
+      <h3>Muestreo por conveniencia</h3>
+      <p>Se incluye a quienes están disponibles y aceptan participar: los pacientes de la sala de espera, los alumnos de tu grupo, los internos del centro al que tienes acceso.</p>
+      <h3>Cómo se hace</h3><ol><li>Define los criterios de inclusión.</li><li>Acude al lugar al que tienes acceso.</li><li>Invita a quien cumpla los criterios hasta completar n.</li><li>Describe con detalle quiénes participaron, para que el lector juzgue a quién se parecen.</li></ol>
+      <h3>En la demostración</h3><p>Solo tienes acceso a ${SC.access}. Saca varias muestras: la media casi no cambia, pero queda lejos de μ. <strong>Poca variación no significa exactitud</strong>: es sesgo.</p>
+    </div><div class="viz" id="nviz"></div></div>
+    <div class="cards"><div><h3>Cuándo se justifica</h3><ul><li>Estudios piloto para probar un instrumento.</li><li>Investigación exploratoria o de tesis con recursos limitados.</li><li>Cuando la pregunta no busca estimar un parámetro de la población.</li></ul></div>
+    <div class="warn"><h3>Riesgos</h3><ul><li>Sesgo de selección: quien está disponible suele ser distinto de quien no lo está.</li><li>Sesgo de autoselección: aceptan participar los más motivados.</li><li>No permite calcular el error muestral ni generalizar.</li></ul></div></div>`,
+  cuo: () => `
+    <div class="stepper"><div class="explain">
+      <h3>Muestreo por cuotas</h3>
+      <p>Se fijan cuotas para que la muestra tenga la misma composición que la población en ciertas variables (sexo, edad, ${SC.strataWord}), pero se llenan con quien esté disponible.</p>
+      <h3>Cómo se hace</h3><ol><li>Elige las variables de control y su distribución en la población.</li><li>Calcula la cuota de cada grupo igual que en la asignación proporcional: n · N<sub>h</sub> / N.</li><li>Recluta a los primeros que encuentres de cada grupo hasta llenar su cuota.</li></ol>
+      <h3>En la demostración</h3><p>Las cuotas se llenan con los primeros ${SC.units} disponibles, empezando por ${SC.access}. La composición por ${SC.strataWord} queda perfecta, pero la media puede seguir sesgada.</p>
+    </div><div class="viz" id="nviz"></div></div>
+    <div class="cards"><div><h3>Diferencia con el estratificado</h3><p>Se parecen en la primera parte (dividir en grupos y repartir la muestra), pero en el estratificado la selección dentro de cada grupo es <strong>aleatoria</strong> y en cuotas es <strong>por disponibilidad</strong>. Igualar la composición no elimina el sesgo en variables que no controlaste.</p></div>
+    <div><h3>Cuándo se justifica</h3><ul><li>Sondeos rápidos de opinión.</li><li>Estudios donde no hay marco muestral pero sí datos de composición de la población.</li></ul></div></div>`,
+  int: () => `
+    <div class="stepper"><div class="explain">
+      <h3>Muestreo intencional o por juicio</h3>
+      <p>Quien investiga elige deliberadamente a los casos que, por sus características, aportan más información a la pregunta. Es el muestreo típico de la investigación <strong>cualitativa</strong>, donde no se busca representatividad estadística sino profundidad.</p>
+      <h3>Cómo se hace</h3><ol><li>Define qué casos pueden responder mejor tu pregunta.</li><li>Establece y documenta los criterios de selección.</li><li>Selecciona y entrevista; analiza en paralelo.</li><li>Continúa hasta la <strong>saturación teórica</strong>: cuando nuevos casos ya no aportan categorías nuevas.</li></ol>
+    </div><div class="viz">
+      <h3 style="margin-top:0">Variantes y ejemplos</h3>
+      <table class="t"><tr><th>Variante</th><th>Qué se busca</th><th>Ejemplo</th></tr>
+      <tr><td>Informantes clave</td><td>Personas con conocimiento privilegiado</td><td>${SC.unit === 'paciente' ? 'Terapeutas con más de 15 años atendiendo depresión' : 'Peritos con más de 20 años de experiencia en valoración de riesgo'}</td></tr>
+      <tr><td>Casos típicos</td><td>Lo habitual</td><td>${SC.unit === 'paciente' ? 'Pacientes con un curso de tratamiento promedio' : 'Internos con una trayectoria institucional común'}</td></tr>
+      <tr><td>Casos extremos</td><td>Lo inusual, para iluminar lo común</td><td>${SC.unit === 'paciente' ? 'Pacientes con remisión muy rápida y con resistencia al tratamiento' : 'Internos con conducta ejemplar y con múltiples reportes'}</td></tr>
+      <tr><td>Máxima variación</td><td>Diversidad de perspectivas</td><td>${SC.unit === 'paciente' ? 'Pacientes de distintas edades, sexos y centros' : 'Jueces de ejecución con posturas contrastantes'}</td></tr>
+      <tr><td>Por criterio</td><td>Casos que cumplen una condición</td><td>${SC.unit === 'paciente' ? 'Pacientes con al menos un intento de abandono del tratamiento' : 'Víctimas que retiraron su denuncia'}</td></tr></table>
+    </div></div>
+    <div class="cards"><div><h3>Cuándo se justifica</h3><ul><li>Estudios cualitativos: fenomenológicos, de teoría fundamentada, estudios de caso.</li><li>Validación de contenido de un instrumento por jueces expertos.</li></ul></div>
+    <div class="warn"><h3>Riesgos</h3><ul><li>Depende del criterio de quien investiga, que puede elegir lo que confirma sus ideas.</li><li>No sirve para estimar prevalencias ni promedios.</li><li>Si los criterios no se documentan, el estudio no es replicable.</li></ul></div></div>`,
+  bola: () => `
+    <div class="stepper"><div class="explain">
+      <h3>Bola de nieve</h3>
+      <p>Se parte de unas pocas personas que cumplen los criterios (las <strong>semillas</strong>) y se les pide que refieran a otras que conozcan. Cada nueva persona refiere a otras, en «olas» sucesivas.</p>
+      <h3>Cómo se hace</h3><ol><li>Identifica semillas diversas, idealmente de distintos contextos.</li><li>Tras la evaluación, pide a cada persona que invite a un número limitado de conocidos.</li><li>Registra quién refirió a quién.</li><li>Repite hasta alcanzar n o la saturación.</li></ol>
+      <h3>Cuándo se usa</h3><p>Con <strong>poblaciones ocultas</strong> o de difícil acceso, sin marco muestral: ${SC.unit === 'paciente' ? 'personas con consumo problemático de sustancias que no acuden a servicios, o cuidadores de personas con esquizofrenia' : 'sobrevivientes de trata de personas, familiares de personas desaparecidas o personas liberadas en reinserción social'}.</p>
+    </div><div class="viz"><div class="netwrap" id="netbox"></div>
+      <div class="ctrl" style="margin-top:8px"><button class="btn small" id="netNext">Siguiente ola</button><button class="btn small ghost" id="netReset">Reiniciar</button></div>
+      <div class="readout" id="netRead" aria-live="polite"></div></div></div>
+    <div class="cards"><div class="warn"><h3>Riesgos</h3><ul><li>Las personas refieren a gente parecida a ellas: la muestra hereda las características de las semillas.</li><li>Quienes no tienen vínculos con la red nunca entran, como el grupo de la derecha en la demostración.</li><li>Quienes tienen más contactos tienen más probabilidad de ser reclutados.</li></ul></div>
+    <div><h3>Cuidados éticos</h3><ul><li>No pidas a los participantes datos de terceros sin su consentimiento: mejor entrégales una invitación para que la otra persona decida contactarte.</li><li>En poblaciones vulnerables, protege la confidencialidad de la cadena de referencias.</li></ul></div></div>`
+};
+function drawNM(){
+  $('#npanel').innerHTML = NM[S.nm]();
+  if (S.nm === 'conv' || S.nm === 'cuo'){
+    const run = () => {
+      const res = S.nm === 'conv' ? sConv(S.n) : sQuota(S.n);
+      let extra = '';
+      if (S.nm === 'cuo') extra = `<table class="t"><tr><th>${SC.strataWord[0].toUpperCase() + SC.strataWord.slice(1)}</th><th>Cuota</th><th>Conseguidos</th></tr>${[0,1,2].map(h => `<tr><td>${SC.strata[h]}</td><td>${res.al.nh[h]}</td><td>${res.got[h]}</td></tr>`).join('')}</table>`;
+      $('#nviz').innerHTML = legend() + gridHTML('cluster', res.ids, { clusters: [0], fadeClusters: false }) + `<div class="readout">${extra}${statBox(res.ids)}${S.nm === 'cuo' ? compo(res.ids) : ''}<button class="btn small" id="nagain">Sacar otra muestra</button> <span class="note">n = ${S.n}; cámbialo en la parte 2.</span></div>`;
+      bindAgain('nagain', run);
+    };
+    run();
+  }
+  if (S.nm === 'bola'){
+    const draw = () => {
+      $('#netbox').innerHTML = netSVG(S.netW);
+      const rec = NET.wave.filter(w => w >= 0 && w <= S.netW).length, other = NET.nodes.filter((n, i) => n.g === 1 && NET.wave[i] >= 0 && NET.wave[i] <= S.netW).length;
+      $('#netRead').innerHTML = `<div class="stats"><div><span>Ola</span><strong>${S.netW}${S.netW === 0 ? ' (semillas)' : ''}</strong></div><div class="key"><span>Personas reclutadas</span><strong>${rec}</strong></div><div><span>De la red de la derecha</span><strong>${other}</strong></div></div>${S.netW >= NET.maxW ? '<p>La red se agotó: nadie más puede ser referido. El grupo de la derecha quedó fuera por completo.</p>' : ''}`;
+      $('#netNext').disabled = S.netW >= NET.maxW;
+    };
+    $('#netNext').onclick = () => { S.netW++; draw(); };
+    $('#netReset').onclick = () => { S.netW = 0; draw(); };
+    draw();
+  }
+}
+document.querySelectorAll('#ntabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#ntabs button').forEach(x => x.setAttribute('aria-selected', x === b)); S.nm = b.dataset.nm; drawNM();
+});
+
+/* ================= PARTE 4 ================= */
+let SIM = false;
+function runSim(){
+  SIM = true; const R = 1000, n = S.n;
+  const meths = [
+    ['Aleatorio simple', () => sMAS(n).ids, false], ['Sistemático', () => sSys(n).ids, false], ['Estratificado proporcional', () => sStr(n).ids, false],
+    [`Conglomerados bietápico (${M_CLU} × ${n / M_CLU})`, () => sClu(n).bi, false], ['Por conveniencia', () => sConv(n).ids, true]
+  ];
+  const res = meths.map(([name, f, b]) => { const est = []; for (let i = 0; i < R; i++) est.push(meanOf(f())); return { name, est, bias: b, m: mean(est), se: sdv(est) }; });
+  const all = res.flatMap(r => r.est); let lo = Math.min(...all, MU), hi = Math.max(...all, MU); const pad = (hi - lo) * .05; lo -= pad; hi += pad;
+  const bins = 36, bw = (hi - lo) / bins;
+  const charts = res.map(r => {
+    const h = new Array(bins).fill(0); r.est.forEach(v => h[Math.min(bins - 1, Math.floor((v - lo) / bw))]++);
+    const W = 360, H = 150, ml = 10, mr = 10, mt = 26, mb = 30, mx = Math.max(...h);
+    const X = v => ml + (v - lo) / (hi - lo) * (W - ml - mr), Y = c => H - mb - c / mx * (H - mt - mb);
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribución de medias: ${r.name}"><text class="lbl" x="${ml}" y="16">${r.name}</text>`;
+    h.forEach((c, i) => { if (c) s += `<rect class="hb ${r.bias ? 'bias' : ''}" x="${X(lo + i * bw)}" y="${Y(c)}" width="${Math.max(1, X(lo + (i + 1) * bw) - X(lo + i * bw) - 1)}" height="${Y(0) - Y(c)}"/>`; });
+    s += `<line class="axis" x1="${ml}" x2="${W - mr}" y1="${Y(0)}" y2="${Y(0)}"/><line class="mu" x1="${X(MU)}" x2="${X(MU)}" y1="${mt - 4}" y2="${Y(0)}"/><text x="${X(MU)}" y="${H - 8}" text-anchor="middle">μ = ${f1(MU)}</text>`;
+    [lo + pad, hi - pad].forEach(v => s += `<text x="${X(v)}" y="${Y(0) + 14}" text-anchor="middle">${f1(v)}</text>`);
+    return `<div class="viz">${s}</svg></div>`;
+  }).join('');
+  const prob = res.slice(0, 4), best = prob.reduce((a, b) => b.se < a.se ? b : a), worst = prob.reduce((a, b) => b.se > a.se ? b : a), conv = res[4];
+  $('#simOut').innerHTML = `<div class="sim">${charts}</div>
+    <div class="tscroll"><table class="t"><tr><th>Método</th><th>Promedio de las 1,000 medias</th><th>Sesgo (promedio − μ)</th><th>Error estándar (desviación de las medias)</th></tr>${res.map(r => `<tr><td>${r.name}</td><td>${f2(r.m)}</td><td>${sgn(r.m - MU)}</td><td>${f2(r.se)}</td></tr>`).join('')}</table></div>
+    <div class="cards">
+      <div><h3>Qué muestran los resultados</h3><ul>
+        <li>Los cuatro métodos probabilísticos se centran en μ (sesgo cercano a 0): son <strong>insesgados</strong>.</li>
+        <li>El más preciso fue <strong>${best.name.toLowerCase()}</strong>, con error estándar de ${f2(best.se)}.${best.name.startsWith('Sistem') ? ` Gana porque la lista está ordenada por ${SC.clusterWord} y el paso fijo reparte la muestra entre los 8: funciona como una estratificación implícita por centro, y aquí los centros difieren.` : ''}${best.name.startsWith('Estrat') ? ` Gana porque los ${SC.strataWord === 'grupo de edad' ? 'grupos de edad' : 'tipos de delito'} difieren en ${SC.varShort}.` : ''}</li>
+        <li>El menos preciso fue <strong>${worst.name.toLowerCase()}</strong> (${f2(worst.se)}).${worst.name.startsWith('Congl') ? ' Los centros difieren entre sí, así que la estimación depende de cuáles salgan sorteados.' : ''}</li>
+        <li>La conveniencia se centra en ${f2(conv.m)}, desplazada ${sgn(conv.m - MU)} puntos de μ. Su distribución puede ser estrecha, pero apunta al lugar equivocado.</li></ul></div>
+      <div><h3>Prueba esto</h3><ul><li>Cambia n a 60 y vuelve a simular: los métodos probabilísticos se vuelven más estrechos (más precisos), pero el sesgo de la conveniencia <strong>no desaparece</strong>.</li><li>Cambia al escenario ${SC.unit === 'paciente' ? 'forense' : 'clínico'} y compara.</li></ul></div>
+      <div><h3>Guía rápida para elegir</h3><ul><li>¿Tienes lista completa y la población está concentrada? Aleatorio simple o sistemático.</li><li>¿Hay subgrupos que difieren y quieres precisión o resultados por grupo? Estratificado.</li><li>¿La población está repartida en muchas sedes y no hay lista de personas? Conglomerados, idealmente combinados con estratos.</li><li>¿Población oculta o pregunta cualitativa? No probabilístico, reconociendo sus límites.</li></ul></div>
+    </div>`;
+}
+$('#simRun').onclick = runSim;
+
+/* ================= PARTE 5 ================= */
+const TYPES = ['Aleatorio simple', 'Sistemático', 'Estratificado', 'Por conglomerados', 'Por conveniencia', 'Por cuotas', 'Intencional o por juicio', 'Bola de nieve'];
+const BANK = [
+  ['Para evaluar la satisfacción con el servicio, una psicóloga entrega el cuestionario a los pacientes que están en la sala de espera el martes por la mañana.', 4, 'Participan quienes estaban disponibles en ese momento y lugar; no hubo sorteo.'],
+  ['Del padrón de 1,200 expedientes de víctimas atendidas en un centro de justicia para mujeres, se numeran todos y con un generador de números aleatorios se eligen 150.', 0, 'Hay marco completo y cada expediente tiene la misma probabilidad de ser elegido.'],
+  ['De la lista de 900 custodios ordenada alfabéticamente, se sortea el número 7 y luego se elige a cada custodio 18.° a partir de él.', 1, 'Arranque aleatorio y luego un intervalo fijo k = 18.'],
+  ['Para estimar la ansiedad en estudiantes de una universidad, se divide la población por facultad y en cada facultad se sortea un número de alumnos proporcional a su tamaño.', 2, 'Se forman grupos (facultades) y se sortea dentro de todos ellos con asignación proporcional.'],
+  ['Se eligen al azar 5 de los 32 centros penitenciarios de un estado y se aplica la entrevista a todos los internos de esos centros.', 3, 'Se sortean grupos naturales (centros) y se evalúa a todos sus miembros: conglomerados monoetápico.'],
+  ['Para estudiar experiencias de sobrevivientes de trata, las primeras participantes contactadas por una organización civil invitan a otras sobrevivientes que conocen.', 7, 'Cada participante recluta a otras de su red: bola de nieve.'],
+  ['Se necesitan 100 entrevistas, 50 hombres y 50 mujeres procesados por homicidio; los entrevistadores aplican el instrumento a los primeros que acepten hasta completar cada grupo.', 5, 'Hay cuotas fijas por sexo, pero se llenan con quien esté disponible, sin sorteo.'],
+  ['Para un estudio cualitativo sobre desgaste profesional en peritos, se elige a seis peritos con más de 20 años de experiencia por considerarlos informantes clave.', 6, 'La investigadora elige deliberadamente a los casos que más información aportan.'],
+  ['En un estudio de depresión posparto se sortean 10 de los 40 hospitales de la red y en cada hospital se sortean 20 madres del registro de altas.', 3, 'Primero se sortean hospitales y luego personas dentro de ellos: conglomerados bietápico.'],
+  ['Una clínica sortea, dentro de cada diagnóstico (depresión, ansiedad, trastornos de la conducta alimentaria), el 10% de los expedientes para auditarlos.', 2, 'Se sortea el mismo porcentaje dentro de cada grupo diagnóstico: estratificado proporcional.'],
+  ['En urgencias psiquiátricas se aplica un tamizaje a cada quinto paciente que llega, empezando por uno sorteado entre los primeros cinco.', 1, 'Arranque aleatorio entre 1 y k = 5, y luego cada k-ésimo.'],
+  ['Para conocer el consumo de sustancias en personas en situación de calle, que no aparecen en ningún padrón, cada participante recibe invitaciones para entregar a conocidos suyos.', 7, 'Población oculta, sin marco; se recluta por referencias en cadena.'],
+  ['Una estudiante de posgrado aplica su cuestionario de apego a sus compañeros de grupo y a sus contactos en redes sociales.', 4, 'Se usa a quien es fácil de alcanzar: conveniencia.'],
+  ['Para obtener baremos de una escala se sortean 300 personas del registro completo de pacientes de un hospital psiquiátrico.', 0, 'Sorteo directo de personas desde un marco completo.'],
+  ['Se busca que la muestra tenga 60% de mujeres y 40% de hombres, como la población de pacientes; se pide a los terapeutas que inviten a quien puedan hasta completar esos porcentajes.', 5, 'Se controla la composición, pero la elección es por disponibilidad.'],
+  ['Para comprender cómo deciden los jueces de ejecución penal, se entrevista a los jueces con las posturas más contrastantes sobre la libertad anticipada.', 6, 'Selección deliberada por máxima variación: intencional.']
+];
+const EX = {};
+function inputRow(id, label){ return `<label>${label}<input class="cell2" id="${id}" inputmode="decimal" autocomplete="off"><span class="fb" id="${id}fb"></span></label>`; }
+function checkField(id, truth, tol, hint){
+  const inp = $('#' + id), fb = $('#' + id + 'fb'), ok = Math.abs(num(inp.value) - truth) <= tol;
+  inp.classList.toggle('ok', ok); inp.classList.toggle('bad', !ok); fb.textContent = ok ? 'Correcto' : hint; fb.className = 'fb ' + (ok ? 'ok' : 'bad'); return ok;
+}
+function newEx(){
+  EX.items = shuffle(BANK.map((b, i) => i)).slice(0, 6);
+  $('#exA').innerHTML = EX.items.map((i, k) => `<div class="item" id="it${k}"><p>${k + 1}. ${BANK[i][0]}</p><select class="cell2" id="sel${k}" aria-label="Tipo de muestreo de la situación ${k + 1}"><option value="">Elige…</option>${TYPES.map((t, j) => `<option value="${j}">${t}</option>`).join('')}</select><div class="why"></div></div>`).join('');
+  $('#exAmsg').textContent = '';
+  // B sistemático
+  const nB = [40, 50, 60, 75, 80][rint(0, 4)], NB = rint(nB * 11, nB * 25) + rint(0, nB - 1), kB = Math.floor(NB / nB), rB = rint(1, kB);
+  EX.B = { NB, nB, kB, rB };
+  $('#exB').innerHTML = `<p>${SC.unit === 'paciente' ? `Un servicio de psicología clínica tiene ${NB.toLocaleString('es-MX')} expedientes numerados y quiere revisar ${nB} para evaluar la adherencia a un protocolo de atención.` : `Una fiscalía tiene ${NB.toLocaleString('es-MX')} carpetas con evaluación psicológica pericial, numeradas, y quiere revisar ${nB} para evaluar su calidad metodológica.`} Usará muestreo sistemático y el arranque aleatorio resultó <strong>r = ${rB}</strong>.</p>
+    <div class="calcgrid">${inputRow('bK', 'Intervalo k')}${inputRow('b4', 'Número del 4.° elemento')}${inputRow('bL', 'Número del último elemento')}</div>
+    <div class="ctrl"><button class="btn small" id="bChk">Comprobar</button><button class="btn small ghost" id="bSol">Ver solución</button></div><div class="msg" id="bMsg"></div>`;
+  // C estratificado
+  let Ns, nC, nh;
+  do {
+    Ns = [rint(120, 500), rint(80, 400), rint(40, 250)]; nC = rint(6, 14) * 10;
+    const NT = Ns[0] + Ns[1] + Ns[2]; nh = Ns.map(x => Math.round(nC * x / NT));
+    EX.C = { Ns, nC, nh, NT };
+  } while (nh.reduce((a, b) => a + b, 0) !== nC || EX.C.Ns.some(x => Math.abs((nC * x / EX.C.NT) % 1 - .5) < .06));
+  const labs = SC.unit === 'paciente' ? ['Depresión', 'Ansiedad', 'Trastornos de la conducta alimentaria'] : ['Violencia física', 'Violencia psicológica', 'Violencia sexual'];
+  EX.C.labs = labs;
+  $('#exC').innerHTML = `<p>${SC.unit === 'paciente' ? 'Una clínica quiere evaluar la calidad de vida de sus pacientes y estratifica por diagnóstico principal.' : 'Un centro de atención a víctimas quiere evaluar síntomas de estrés postraumático y estratifica por tipo de violencia principal.'} Necesita una muestra de <strong>n = ${nC}</strong> con asignación proporcional. Redondea al entero más cercano.</p>
+    <table class="t"><tr><th>Estrato</th><th>N<sub>h</sub></th></tr>${labs.map((l, i) => `<tr><td>${l}</td><td>${Ns[i]}</td></tr>`).join('')}</table>
+    <div class="calcgrid">${inputRow('cN', 'N total')}${labs.map((l, i) => inputRow('c' + i, 'n<sub>h</sub> ' + l)).join('')}</div>
+    <div class="ctrl"><button class="btn small" id="cChk">Comprobar</button><button class="btn small ghost" id="cSol">Ver solución</button></div><div class="msg" id="cMsg"></div>`;
+  // D tamaño
+  const ND = rint(4, 60) * 100, eD = [0.04, 0.05, 0.06][rint(0, 2)], Z = 1.96, n0 = Z * Z * .25 / (eD * eD), nD = Math.ceil(n0 / (1 + (n0 - 1) / ND));
+  EX.D = { ND, eD, n0, nD };
+  $('#exD').innerHTML = `<p>${SC.unit === 'paciente' ? `Se quiere estimar el porcentaje de pacientes con ideación suicida entre los ${ND.toLocaleString('es-MX')} atendidos en una red de salud mental, para planear recursos de intervención en crisis.` : `Se quiere estimar el porcentaje de adolescentes con experiencias de victimización previa entre los ${ND.toLocaleString('es-MX')} que están en centros de internamiento especializados.`} No hay estudios previos, así que se usa p = 0.5. Confianza de 95% (Z = 1.96) y margen de error de ${eD * 100}%.</p>
+    <div class="calcgrid">${inputRow('dN0', 'n₀ (población infinita, 2 decimales)')}${inputRow('dN', 'n corregido (redondeado hacia arriba)')}</div>
+    <div class="ctrl"><button class="btn small" id="dChk">Comprobar</button><button class="btn small ghost" id="dSol">Ver solución</button></div><div class="msg" id="dMsg"></div>`;
+  bindEx();
+}
+function bindEx(){
+  const B = EX.B, C = EX.C, D = EX.D;
+  const doB = sol => { if (sol){ $('#bK').value = B.kB; $('#b4').value = B.rB + 3 * B.kB; $('#bL').value = B.rB + (B.nB - 1) * B.kB; }
+    const a = checkField('bK', B.kB, 0, 'k = N / n, redondeado hacia abajo.'), b = checkField('b4', B.rB + 3 * B.kB, 0, 'El 4.° es r + 3k.'), c = checkField('bL', B.rB + (B.nB - 1) * B.kB, 0, 'El último es r + (n − 1)k.');
+    $('#bMsg').innerHTML = `k = ${B.NB} / ${B.nB} = ${f2(B.NB / B.nB)} → ${B.kB}. Elementos: ${B.rB}, ${B.rB + B.kB}, ${B.rB + 2 * B.kB}, ${B.rB + 3 * B.kB}, … , ${B.rB + (B.nB - 1) * B.kB}.`; $('#bMsg').className = 'msg ' + (a && b && c ? 'ok' : 'bad'); if (!(a && b && c) && !sol) $('#bMsg').textContent = 'Revisa los campos marcados.'; };
+  $('#bChk').onclick = () => doB(false); $('#bSol').onclick = () => doB(true);
+  const doC = sol => { if (sol){ $('#cN').value = C.NT; C.nh.forEach((v, i) => $('#c' + i).value = v); }
+    let ok = checkField('cN', C.NT, 0, 'Suma los tres N_h.'); C.nh.forEach((v, i) => ok = checkField('c' + i, v, 0, `${C.nC} · ${C.Ns[i]} / N`) && ok);
+    $('#cMsg').innerHTML = ok ? C.labs.map((l, i) => `${l}: ${C.nC} · ${C.Ns[i]} / ${C.NT} = ${f2(C.nC * C.Ns[i] / C.NT)} → ${C.nh[i]}`).join('<br>') + `<br>Suma: ${C.nC} ✓` : 'Revisa los campos marcados. Recuerda: n<sub>h</sub> = n · N<sub>h</sub> / N.';
+    $('#cMsg').className = 'msg ' + (ok ? 'ok' : 'bad'); };
+  $('#cChk').onclick = () => doC(false); $('#cSol').onclick = () => doC(true);
+  const doD = sol => { if (sol){ $('#dN0').value = f2(D.n0); $('#dN').value = D.nD; }
+    const a = checkField('dN0', D.n0, 0.51, 'n₀ = 1.96² · 0.5 · 0.5 / e²'), b = checkField('dN', D.nD, 1, 'n = n₀ / [1 + (n₀ − 1)/N], hacia arriba.');
+    $('#dMsg').innerHTML = (a && b) ? `n₀ = 3.8416 · 0.25 / ${D.eD}² = ${f2(D.n0)}<br>n = ${f2(D.n0)} / [1 + (${f2(D.n0)} − 1) / ${D.ND}] = ${f2(D.n0 / (1 + (D.n0 - 1) / D.ND))} → ${D.nD}` : 'Revisa los campos marcados.';
+    $('#dMsg').className = 'msg ' + (a && b ? 'ok' : 'bad'); };
+  $('#dChk').onclick = () => doD(false); $('#dSol').onclick = () => doD(true);
+}
+$('#exAcheck').onclick = () => {
+  let ok = 0, ans = 0;
+  EX.items.forEach((i, k) => { const s = $('#sel' + k), it = $('#it' + k); if (s.value === '') return; ans++; const good = +s.value === BANK[i][1]; if (good) ok++;
+    s.classList.toggle('ok', good); s.classList.toggle('bad', !good); it.classList.add('checked');
+    it.querySelector('.why').innerHTML = `${good ? 'Correcto.' : `La respuesta es: <strong>${TYPES[BANK[i][1]]}</strong>.`} ${BANK[i][2]}`; });
+  $('#exAmsg').textContent = ans < 6 ? `Llevas ${ok} de ${ans} respondidas correctamente. Responde las 6.` : `${ok} de 6 correctas.${ok === 6 ? ' Excelente.' : ' Lee la explicación de las que fallaste.'}`;
+  $('#exAmsg').className = 'msg ' + (ok === 6 ? 'ok' : 'bad');
+};
+$('#exNew').onclick = newEx;
+
+/* ================= navegación y escenario ================= */
+document.querySelectorAll('nav.parts button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav.parts button').forEach(x => x.setAttribute('aria-selected', x === b));
+  document.querySelectorAll('section.part').forEach(s => s.classList.toggle('on', s.id === b.dataset.part));
+});
+function setScen(k){
+  SC = SCEN[k]; POP = makePop(SC); N = POP.length; MU = mean(POP.map(p => p.v)); SIGMA = sdv(POP.map(p => p.v));
+  S.ms = {}; S.p1 = sMAS(S.n); S.hist = [meanOf(S.p1.ids)]; S.netW = 0; NET = NET || makeNet();
+  document.querySelectorAll('.scen button').forEach(b => b.setAttribute('aria-pressed', b.dataset.scen === k));
+  $('#caseText').innerHTML = `<p><strong>${k === 'clin' ? 'Caso clínico' : 'Caso forense'}.</strong> ${SC.intro}</p>`;
+  C.go(C.i); M.go(M.i); drawNM(); newEx();
+  if (SIM) runSim();
+}
+document.querySelectorAll('.scen button').forEach(b => b.onclick = () => setScen(b.dataset.scen));
+refreshN(); setScen('clin');
+</script>
+</body>
+</html>
